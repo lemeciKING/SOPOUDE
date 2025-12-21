@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assitance à la fammile SOPOUDE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #00CEFF;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --success: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light) 0%, #DFE6E9 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: white;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 🔴 Logo en CERCLE */
+        header img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.2rem;
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        /* 💬 Verset biblique */
+        .verse {
+            text-align: center;
+            padding: 1.8rem 1.5rem;
+            font-size: 1.15rem;
+            color: var(--dark);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        .verse strong {
+            font-style: normal;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 1.5rem 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 1.5rem;
+            border: 1px solid #eee;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin: 0 auto 1rem;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .select-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 220px;
+            margin: 0 auto;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+        /* 🟢 Overlay de chargement stylisé (comme ton image) */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+        }
+
+        .loading-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            max-width: 350px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .loading-icon {
+            background: var(--success);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .loading-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+
+        .loading-subtitle {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-info {
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            color: #aaa;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-icons a {
+            color: white;
+            font-size: 1.6rem;
+            background: rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .footer-icons a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 0 1rem 1.5rem;
+            }
+            header img {
+                width: 80px;
+                height: 80px;
+            }
+            .loading-card {
+                padding: 1.5rem;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- 🔁 Remplace par ta photo ou logo -->
+        <img src="sopoude.jpeg" alt="Photo de [Prénom]">
+        <h1>Soutien à SOPOUDÉ GOMA YVES EMMANUEL</h1>
+    </header>
+
+    <!-- ✝️ Verset biblique -->
+    <div class="verse">
+        « Réjouissez-vous avec ceux qui se réjouissent; pleurez avec ceux qui pleurent. »<br>
+        <strong>Romains 12:15</strong>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <img src="https://files.catbox.moe/h2jpok.jpg" alt="Orange Money">
+            <p>Orange Money</p>
+            <a href="https://lemeciking.github.io/SOPOUDE-ORANGE/" class="select-btn" data-network="Orange">Faire un don avec Orange</a>
+        </div>
+        <div class="card">
+            <img src="https://files.catbox.moe/bghu0y.jpg" alt="MTN Money">
+            <p>MTN Mobile Money</p>
+            <a href="https://lemeciking.github.io/SOPOUDE-MTN/" class="select-btn" data-network="MTN">Faire un don avec MTN</a>
+        </div>
+        <div class="card">
+            <img src="https://files.catbox.moe/wl3xzc.jpg" alt="Moov Money">
+            <p>Moov Money</p>
+            <a href="https://lemeciking.github.io/SOPOUDE-MOOV/" class="select-btn" data-network="Moov">Faire un don avec Moov</a>
+        </div>
+        <div class="card">
+            <img src="https://files.catbox.moe/bj03jq.jpg" alt="Wave">
+            <p>Wave</p>
+            <a href="https://pay.wave.com/m/M_ci_GrJMJv8yiV5F/c/ci/" class="select-btn" data-network="Wave">Faire un don avec Wave</a>
+        </div>
+        <div class="card">
+            <img src="djamo.png" alt="Djamo">
+            <p>Djamo</p>
+            <a href="https://lemeciking.github.io/SOPOUDE-DJAMO/" class="select-btn" data-network="Djamo">Faire un don avec Djamo</a>
+        </div>
+        <div class="card">
+            <img src="tresor%20money.png" alt="Trésor Money">
+            <p>Trésor Money</p>
+            <a href="https://lemeciking.github.io/SOPOUDE-TRESORMONEY/" class="select-btn" data-network="Trésor Money">Faire un don avec Trésor</a>
+        </div>
+    </div>
+
+    <!-- 🟢 Overlay de chargement stylisé -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-card">
+            <div class="loading-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="loading-title">Paiement <span id="networkName">...</span> en cours</div>
+            <div class="loading-subtitle">Veuillez patienter…</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-info">POUR PLUS D'INFOS</div>
+        <div class="footer-icons">
+            <a href="tel: +2250500369100" aria-label="Appeler"><i class="fas fa-phone"></i></a>
+            <a href="https://wa.me/+2250500369100" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:lemecioff@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 – Collecte solidaire pour SOPOUDÉ GOMA YVES EMMANUEL
+        </div>
+    </footer>
+
+    <script>
+        // ✨ Apparition progressive des cartes
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 300 * (index + 1));
+            });
+
+            // 🟢 Gestion du clic sur les boutons
+            const buttons = document.querySelectorAll('.select-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const network = this.getAttribute('data-network');
+                    const overlay = document.getElementById('loadingOverlay');
+                    const networkSpan = document.getElementById('networkName');
+
+                    networkSpan.textContent = network;
+                    overlay.style.display = 'flex';
+
+                    // Redirige après 1s pour UX fluide
+                    setTimeout(() => {
+                        window.location.href = this.getAttribute('href');
+                    }, 3000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
